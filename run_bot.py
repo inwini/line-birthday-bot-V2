@@ -8,7 +8,7 @@ import sys
 while(True):
 	with open('vocab.csv','r', encoding="utf8") as csv_file:
 		csv_reader = csv.reader(csv_file)
-		dt = datetime.now().strftime('%m%d%H%M')
+		dt = datetime.now().strftime('%Y%m%d%H%M')
 		dtime = int(dt)
 		
 		for line in csv_reader:
