@@ -1,0 +1,13 @@
+[Unit]
+Description=Birthday Bot V2 daemon
+After=network.target
+
+[Service]
+Type=simple
+User=inw-bots
+Restart=on-failure
+WorkingDirectory=/home/inw-bots/app/line-notify/birthday-bot-v2
+ExecStart=pipenv run python run_bot.py
+
+[Install]
+WantedBy=multi-user.target
