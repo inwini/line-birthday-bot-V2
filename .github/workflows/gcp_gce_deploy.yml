@@ -1,0 +1,39 @@
+# This is a workflow for syncing and deploy
+
+name: ComputeEngine-Deploy
+
+# Trigger on publish or manually trigger
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+  
+  
+jobs:
+  clone-rsync-command:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: clone repo
+      uses: actions/checkout@v2
+
+    - name: Rsync Deployments Action
+      # You may pin to the exact commit or the version.
+      # uses: Burnett01/rsync-deployments@0dc935cdecc5f5e571865e60d2a6cdc673704823
+      uses: Burnett01/rsync-deployments@5.2
+      with:
+        # The switches
+        switches: -avzr --delete --exclude=".*"
+        path: ./
+        remote_path: /home/inw-bots/app/line-notify/birthday-bot-v2
+        remote_host: 34.87.127.145
+        remote_user: inw-bots
+        remote_key: ${{secrets.PRIVATE_KEY}}
+
+    # Runs a single command using the runners shell
+    - name: Alert
+      run: echo Sync Done. Try to restart service.
+    
