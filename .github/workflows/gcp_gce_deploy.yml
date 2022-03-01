@@ -16,6 +16,24 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    # Create SSH config file for running ssh command
+    - name: Configure SSH
+      run: |
+        mkdir -p ~/.ssh/
+        echo "$SSH_KEY" > ~/.ssh/gcp-target.key
+        chmod 600 ~/.ssh/gcp-target.key
+        cat >>~/.ssh/config <<END
+        Host gcp-target
+          HostName $SSH_HOST
+          User $SSH_USER           
+          IdentityFile ~/.ssh/gcp-target.key
+          StrictHostKeyChecking no
+        END
+      env:
+        SSH_USER: inw-bots
+        SSH_KEY: ${{ secrets.PRIVATE_KEY }}
+        SSH_HOST: 34.87.127.145
+        
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: clone repo
       uses: actions/checkout@v2
@@ -36,4 +54,13 @@ jobs:
     # Runs a single command using the runners shell
     - name: Alert
       run: echo Sync Done. Try to restart service.
+    
+    # Pipenv Sync
+    - name: Pipenv Sync
+      run: ssh gcp-target 'cd /home/inw-bots/app/line-notify/birthday-bot-v2 && pipenv sync'
+    
+    
+    # Pipenv Sync
+    - name: Pipenv Sync
+      run: ssh gcp-target 'sudo systemctl restart inw-birthday-bot-v2.service'
     
