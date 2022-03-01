@@ -62,5 +62,5 @@ jobs:
     
     # Restart Service
     - name: Restart Service
-      run: ssh gcp-target 'sudo systemctl restart inw-birthday-bot-v2.service'
+      run: ssh gcp-target 'sudo systemctl restart inw-birthday-bot-v2'
     
