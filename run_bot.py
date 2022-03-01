@@ -35,4 +35,4 @@ while(True):
 			
 				# print(r.text)
 				
-				time.sleep(61) 
+				time.sleep(1801) 
